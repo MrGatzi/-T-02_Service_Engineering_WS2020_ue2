@@ -1,0 +1,87 @@
+package com.se.corona;
+
+import java.util.List;
+
+public class Patient {
+
+    String id;
+    long dateInfect;
+    long dateEnd;
+    long birthday;
+    Gender gender;
+    List<String> preConditions;
+    String district;
+    State state;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public long getDateInfect() {
+        return dateInfect;
+    }
+
+    public void setDateInfect(long dateInfect) {
+        this.dateInfect = dateInfect;
+    }
+
+    public long getDateEnd() {
+        return dateEnd;
+    }
+
+    public void setDateEnd(long dateEnd) {
+        this.dateEnd = dateEnd;
+    }
+
+    public long getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(long birthday) {
+        this.birthday = birthday;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public List<String> getPreConditions() {
+        return preConditions;
+    }
+
+    public void setPreConditions(List<String> preConditions) {
+        this.preConditions = preConditions;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+}
+
+enum Gender {
+    W, M, U
+}
+
+enum State {
+    W, OOE, NOE, SBG, KTN, BGLD, T, VBG, STMK
+}

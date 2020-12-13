@@ -1,33 +1,47 @@
 package com.se.corona;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("patients")
 public class Controller {
 
+    PatientRepository patientRepository;
+
+    @Autowired
+    Controller(PatientRepository patientRepository) {
+        this.patientRepository = patientRepository;
+
+    }
+
     @PostMapping("/")
-    void postPatient(@RequestBody Patient patient){
+    void postPatient(@RequestBody Patient patient) {
 
     }
 
-    static class Patient{
-        Date dateInfect;
-        Date dateEnd;
-        Date Birthday;
-        Gender gender;
-        List<String> preconditions;
-        String district;
-        String state;
+    @GetMapping("/")
+    List<Patient> getPatients() {
+        return patientRepository.findAll();
     }
 
-    enum Gender{
-        W,M,U
+    @PutMapping("/{id}")
+    ResponseEntity<Object> updatePatient(@RequestBody Patient patient, @PathVariable String id) {
+        if(this.patientRepository.existsById(id)) {
+            patient.setId(id);
+            this.patientRepository.save(patient);
+            return new ResponseEntity<>(patient, HttpStatus.OK);
+        }
+        else return new ResponseEntity<>("Patient with id "+ id + " didn't exist in DB.",HttpStatus.BAD_REQUEST);
+    }
+
+    @DeleteMapping("/{id}")
+    void deletePatient(@PathVariable String id) {
+        this.patientRepository.deleteById(id);
     }
 }
