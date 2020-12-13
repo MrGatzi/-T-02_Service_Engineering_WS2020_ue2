@@ -29,7 +29,7 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "Pet object that needs to be added to the store"
+        description: "Patien object that needs to be added to the database"
         required: true
         schema:
           $ref: "#/definitions/Patient"
@@ -48,20 +48,10 @@ paths:
       produces:
       - "application/xml"
       - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Pet object that needs to be added to the store"
-        required: true
-        schema:
-          $ref: "#/definitions/Patient"
       responses:
-        "400":
-          description: "Invalid ID supplied"
-        "404":
-          description: "Pet not found"
-        "405":
-          description: "Validation exception"
+        200:
+          description: "Returning all Patients"
+        
   /patients/{id}:
     put:
       tags:
@@ -98,27 +88,35 @@ definitions:
       dateInfect:
         type: "integer"
         format: "epochInMilliseconds"
+        example: 1606889604
       dateEnd:
         type: "integer"
         format: "epochInMilliseconds"
+        example: 1607889604
       birthday:
         type: "integer"
         format: "epochInMilliseconds"
+        example: 884419200
       age:
-        type: "integer"
-        format: "int32"
+        type: integer
+        format: int32
+        example: 54
       gender:
-        type: "string"
+        type: string
         enum:
-        - "W"
-        - "M"
-        - "U"
+        - W
+        - M
+        - U
+        example: W
       preCondition:
-        type: "string"
+        type: array
+        items:
+          type: string
+        example: [Husten,Schnupfen]
       district:
-        type: "string"
+        type: string
       state:
-        type: "string"
+        type: string
         enum:
         - "W"
         - "NOE"
@@ -129,3 +127,4 @@ definitions:
         - "KTN"
         - "STMK"
         - "BGLD"
+        example: "OOE"
