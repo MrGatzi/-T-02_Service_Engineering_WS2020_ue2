@@ -1,0 +1,10 @@
+
+/patetients
+post
+get
+/patetients/9378837459274
+put
+deltete
+
+
+{"id":2657,"dateinfect":"2020-11-13T22:08","dateend":"2020-12-06T22:08","age":"15","gender":"w","precond":"Husten","district":"Niederneukirchen","state":"oo"}
