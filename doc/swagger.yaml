@@ -1,130 +1,222 @@
-swagger: "2.0"
+openapi: 3.0.0
 info:
-  description: "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."
-  version: "1.0.0"
-  title: "Swagger Petstore"
-  termsOfService: "http://swagger.io/terms/"
-  contact:
-    email: "apiteam@swagger.io"
-  license:
-    name: "Apache 2.0"
-    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "petstore.swagger.io"
-basePath: "/v2"
-schemes:
-- "https"
-- "http"
+  description: This is a Corona Patients Service
+  version: 1.0.0-oas3
+  title: CoronaPatientsService
 paths:
   /patients:
-    post:
-      tags:
-      - "Patients"
-      summary: "Add a new patient to the database"
-      description: ""
-      operationId: "addPatient"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Patien object that needs to be added to the database"
-        required: true
-        schema:
-          $ref: "#/definitions/Patient"
-      responses:
-        "405":
-          description: "Invalid input"
     get:
       tags:
-      - "Patients"
-      summary: "Return all Patients"
-      description: ""
-      operationId: "getPatients"
-      consumes:
-      - "application/json"
-      - "application/xml"
-      produces:
-      - "application/xml"
-      - "application/json"
+        - Patients
+      summary: Retrieve all patients
+      description: ''
+      operationId: getPatients
       responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                  - $ref: '#/components/schemas/Patient'
+    post:
+      tags:
+        - Patients
+      summary: Add a list of patients to the database
+      description: ''
+      operationId: postPatients
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                allOf:
+                - $ref: '#/components/schemas/Patient'
+        description: List of patients that needs to be added to the database
+        required: true
+      responses:
+        '405':
+          description: Invalid input
         200:
-          description: "Returning all Patients"
-        
-  /patients/{id}:
+          description: OK
+  /patients/byDate:
+    get:
+      tags:
+      - Patients
+      summary: Retrieve patients by ID
+      description: Filters patients by start and end-date of their illness.
+      operationId: getPatientsIllBefore
+      parameters:
+        - in: query
+          name: startBefore
+          schema:
+            type: integer
+            format: epochInMilliseconds
+            example: 1607889604
+        - in: query
+          name: startAfter
+          schema:
+            type: integer
+            format: epochInMilliseconds
+            example: 1607889604
+        - in: query
+          name: endBefore
+          schema:
+            type: integer
+            format: epochInMilliseconds
+            example: 1607889604
+        - in: query
+          name: endAfter
+          schema:
+            type: integer
+            format: epochInMilliseconds
+            example: 1607889604
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                  - $ref: '#/components/schemas/Patient'
+  /patient:
+    post:
+      tags:
+        - Patient
+      summary: Add a new patient to the database
+      description: ''
+      operationId: addPatient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patient'
+        description: Patien object that needs to be added to the database
+        required: true
+      responses:
+        '405':
+          description: Invalid input
+          
+  /patient/{id}:
     put:
       tags:
-      - "Patients"
-      summary: "Update a Patient"
-      description: ""
-      operationId: "updatePatient"
-      consumes:
-      - "application/json"
-      - "application/xml"
-      produces:
-      - "application/xml"
-      - "application/json"
+        - Patient
+      summary: Update a patient
+      description: ''
+      operationId: updatePatient
       parameters:
-      - in: path
-        name: id
-        type: string
-        description: "ID of the Patient to update"
-        required: true
-      - in: body
-        name: patient
-        schema:
-          $ref: "#/definitions/Patient"
+        - in: path
+          name: id
+          description: ID of the Patient to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patient'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Patient'
       responses:
-        "404":
-          description: "Patient not found"
-
-definitions:
-  Patient:
-    type: "object"
-    properties:
-      id:
-        type: "string"
-      dateInfect:
-        type: "integer"
-        format: "epochInMilliseconds"
-        example: 1606889604
-      dateEnd:
-        type: "integer"
-        format: "epochInMilliseconds"
-        example: 1607889604
-      birthday:
-        type: "integer"
-        format: "epochInMilliseconds"
-        example: 884419200
-      age:
-        type: integer
-        format: int32
-        example: 54
-      gender:
-        type: string
-        enum:
-        - W
-        - M
-        - U
-        example: W
-      preCondition:
-        type: array
-        items:
+        '404':
+          description: Patient not found
+    get:
+      tags:
+        - Patient
+      summary: Get a patient by id
+      operationId: getPatient
+      parameters:
+        - in: path
+          name: id
+          description: ID of the Patient to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        '404':
+          description: Patient not found
+    delete:
+      tags:
+        - Patient
+      summary: Delete a patient by id
+      operationId: deletePatient
+      parameters:
+        - in: path
+          name: id
+          description: ID of the Patient to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Patient not found
+servers:
+  - url: 'https://virtserver.swaggerhub.com/RingoDev5/CoronaPatientsService/1.0.0'
+  - url: 'http://virtserver.swaggerhub.com/RingoDev5/CoronaPatientsService/1.0.0'
+components:
+  schemas:
+    Patient:
+      type: object
+      properties:
+        id:
           type: string
-        example: [Husten,Schnupfen]
-      district:
-        type: string
-      state:
-        type: string
-        enum:
-        - "W"
-        - "NOE"
-        - "OOE"
-        - "SBG"
-        - "T"
-        - "VBG"
-        - "KTN"
-        - "STMK"
-        - "BGLD"
-        example: "OOE"
+        dateInfect:
+          type: integer
+          format: epochInMilliseconds
+          example: 1606889604
+        dateEnd:
+          type: integer
+          format: epochInMilliseconds
+          example: 1607889604
+        birthday:
+          type: integer
+          format: epochInMilliseconds
+          example: 884419200
+        age:
+          type: integer
+          format: int32
+          example: 54
+        gender:
+          type: string
+          enum:
+            - W
+            - M
+            - U
+          example: W
+        preCondition:
+          type: array
+          items:
+            type: string
+          example:
+            - Husten
+            - Schnupfen
+        district:
+          type: string
+        state:
+          type: string
+          enum:
+            - W
+            - NOE
+            - OOE
+            - SBG
+            - T
+            - VBG
+            - KTN
+            - STMK
+            - BGLD
+          example: OOE
