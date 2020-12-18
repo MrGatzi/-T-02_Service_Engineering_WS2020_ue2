@@ -170,12 +170,8 @@ components:
             - U
           example: W
         preCondition:
-          type: array
-          items:
-            type: string
-          example:
-            - Husten
-            - Schnupfen
+          type: string
+          example: Husten
         district:
           type: string
         state:
