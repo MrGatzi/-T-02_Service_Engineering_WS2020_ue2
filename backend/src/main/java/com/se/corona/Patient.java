@@ -1,18 +1,28 @@
 package com.se.corona;
 
-import java.util.List;
+import net.bytebuddy.dynamic.loading.InjectionClassLoader;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Patient {
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     String id;
     long dateInfect;
     long dateEnd;
     long birthday;
     Gender gender;
-    List<String> preConditions;
+    String preConditions;
     String district;
     State state;
 
+    @Id
     public String getId() {
         return id;
     }
@@ -53,11 +63,11 @@ public class Patient {
         this.gender = gender;
     }
 
-    public List<String> getPreConditions() {
+    public String getPreConditions() {
         return preConditions;
     }
 
-    public void setPreConditions(List<String> preConditions) {
+    public void setPreConditions(String preConditions) {
         this.preConditions = preConditions;
     }
 
@@ -76,6 +86,7 @@ public class Patient {
     public void setState(State state) {
         this.state = state;
     }
+
 }
 
 enum Gender {
