@@ -4,10 +4,10 @@ info:
   version: 1.0.0-oas3
   title: CoronaPatientsService
 paths:
-  /patients:
+  /patient:
     get:
       tags:
-        - Patients
+        - Patient
       summary: Retrieve all patients
       description: ''
       operationId: getPatients
@@ -46,28 +46,6 @@ paths:
                 items:
                   allOf:
                   - $ref: '#/components/schemas/PatientWithId'
-    post:
-      tags:
-        - Patients
-      summary: Add a list of patients to the database
-      description: ''
-      operationId: postPatients
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                allOf:
-                - $ref: '#/components/schemas/Patient'
-        description: List of patients that needs to be added to the database
-        required: true
-      responses:
-        '405':
-          description: Invalid input
-        200:
-          description: OK
-  /patient:
     post:
       tags:
         - Patient
