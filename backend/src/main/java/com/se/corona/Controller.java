@@ -20,15 +20,14 @@ public class Controller {
     @Autowired
     Controller(PatientRepository patientRepository) {
         this.patientRepository = patientRepository;
-
     }
 
-    @PostMapping("")
+    @PostMapping()
     void postPatient(@RequestBody Patient patient) {
-
+        this.patientRepository.save(patient);
     }
 
-    @GetMapping("")
+    @GetMapping()
     List<Patient> getPatients(@RequestParam(required = false) Long startBefore, @RequestParam(required = false) Long startAfter, @RequestParam(required = false) Long endBefore, @RequestParam(required = false) Long endAfter) {
         List<Patient> patients = patientRepository.findAll();
         if (startBefore != null) {
@@ -46,19 +45,24 @@ public class Controller {
         return patients;
     }
 
+    @GetMapping("/{id}")
+    ResponseEntity<Object> getPatient(@PathVariable String id) {
+        if (this.patientRepository.existsById(id)) {
+            return new ResponseEntity<>(this.patientRepository.findById(id), HttpStatus.OK);
+        } else return new ResponseEntity<>("Patient with id " + id + " didn't exist in DB.", HttpStatus.NOT_FOUND);
+    }
+
     @PutMapping("/{id}")
     ResponseEntity<Object> updatePatient(@RequestBody Patient patient, @PathVariable String id) {
         if (this.patientRepository.existsById(id)) {
             patient.setId(id);
             this.patientRepository.save(patient);
             return new ResponseEntity<>(patient, HttpStatus.OK);
-        } else return new ResponseEntity<>("Patient with id " + id + " didn't exist in DB.", HttpStatus.BAD_REQUEST);
+        } else return new ResponseEntity<>("Patient with id " + id + " didn't exist in DB.", HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/{id}")
     void deletePatient(@PathVariable String id) {
         this.patientRepository.deleteById(id);
     }
-
-
 }
