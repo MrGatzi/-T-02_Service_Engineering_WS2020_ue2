@@ -11,7 +11,7 @@ public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    String id;
+    long id;
     long dateInfect;
     long dateEnd;
     long birthday;
@@ -21,11 +21,11 @@ public class Patient {
     State state;
 
     @Id
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

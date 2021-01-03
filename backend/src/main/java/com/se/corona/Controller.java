@@ -46,14 +46,14 @@ public class Controller {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Object> getPatient(@PathVariable String id) {
+    ResponseEntity<Object> getPatient(@PathVariable Long id) {
         if (this.patientRepository.existsById(id)) {
             return new ResponseEntity<>(this.patientRepository.findById(id), HttpStatus.OK);
         } else return new ResponseEntity<>("Patient with id " + id + " didn't exist in DB.", HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Object> updatePatient(@RequestBody Patient patient, @PathVariable String id) {
+    ResponseEntity<Object> updatePatient(@RequestBody Patient patient, @PathVariable Long id) {
         if (this.patientRepository.existsById(id)) {
             patient.setId(id);
             this.patientRepository.save(patient);
@@ -62,7 +62,7 @@ public class Controller {
     }
 
     @DeleteMapping("/{id}")
-    void deletePatient(@PathVariable String id) {
+    void deletePatient(@PathVariable Long id) {
         this.patientRepository.deleteById(id);
     }
 }
