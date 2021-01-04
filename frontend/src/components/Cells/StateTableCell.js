@@ -29,6 +29,30 @@ const useStyles = makeStyles(theme => ({
 export default function StateTableCell({row, name, onChange}) {
     const classes = useStyles();
     const {isEditMode} = row;
+
+    function renderState(input) {
+        switch (input) {
+            case 'OOE':
+                return 'Oberösterreich';
+            case 'W':
+                return 'Wien';
+            case 'NOE':
+                return 'Niederösterreich';
+            case 'BGLD':
+                return 'Burgenland';
+            case 'STMK':
+                return 'Steiermark';
+            case "KTN":
+                return 'Kärnten';
+            case 'T':
+                return 'Tirol';
+            case 'SBG':
+                return 'Salzburg';
+            case 'VBG':
+                return 'Vorarlberg';
+        }
+    }
+
     return (
         <TableCell align="left" className={classes.tableCell}>
             {isEditMode ? (
@@ -38,18 +62,18 @@ export default function StateTableCell({row, name, onChange}) {
                     onChange={e => onChange(e, row)}
                     className={classes.input}
                 >
-                    <MenuItem value={"Oberösterreich"}>Oberösterreich</MenuItem>
-                    <MenuItem value={"Wien"}>Wien</MenuItem>
-                    <MenuItem value={"Niederösterreich"}>Niederösterreich</MenuItem>
-                    <MenuItem value={"Burgenland"}>Burgenland</MenuItem>
-                    <MenuItem value={"Steiermark"}>Steiermark</MenuItem>
-                    <MenuItem value={"Kärnten"}>Kärnten</MenuItem>
-                    <MenuItem value={"Tirol"}>Tirol</MenuItem>
-                    <MenuItem value={"Salzburg"}>Salzburg</MenuItem>
-                    <MenuItem value={"Vorarlberg"}>Vorarlberg</MenuItem>
+                    <MenuItem value={"OOE"}>Oberösterreich</MenuItem>
+                    <MenuItem value={"W"}>Wien</MenuItem>
+                    <MenuItem value={"NOE"}>Niederösterreich</MenuItem>
+                    <MenuItem value={"BGLD"}>Burgenland</MenuItem>
+                    <MenuItem value={"STMK"}>Steiermark</MenuItem>
+                    <MenuItem value={"KTN"}>Kärnten</MenuItem>
+                    <MenuItem value={"T"}>Tirol</MenuItem>
+                    <MenuItem value={"SBG"}>Salzburg</MenuItem>
+                    <MenuItem value={"VBG"}>Vorarlberg</MenuItem>
                 </Select>
             ) : (
-                row[name]
+                renderState(row[name])
             )}
         </TableCell>
     );

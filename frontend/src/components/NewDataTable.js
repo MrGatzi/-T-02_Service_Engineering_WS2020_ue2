@@ -1,4 +1,4 @@
-import React, {useEffect, useState, Component} from 'react';
+import React, {useEffect, useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -6,11 +6,8 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import DataRow from "./DataRow";
+import NewDataRow from "./NewDataRow";
 import Typography from "@material-ui/core/Typography";
-import axios from '../utils/axios';
-import {useSnackbar} from "notistack";
-import {useData} from "../context/data";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -34,22 +31,12 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-
-export default function DataTable() {
+export default function NewDataTable() {
     const classes = useStyles();
-    const {data, getPatientData} = useData();
-    const [rows, setRows] = React.useState([]);
-    const {enqueueSnackbar} = useSnackbar();
-
-    useEffect(() => {
-        setRows([]);
-        setRows(data);
-    }, [data]);
-
     return (
         <Paper className={classes.root}>
             <Typography variant="h6" component="h2">
-                DataSet:
+                Add Entry:
             </Typography>
             <Table className={classes.table} aria-label="caption table">
                 <TableHead>
@@ -65,12 +52,9 @@ export default function DataTable() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map(row => (
-                        <DataRow data={row}/>
-                    ))}
+                    <NewDataRow/>
                 </TableBody>
             </Table>
         </Paper>
     );
-
 }

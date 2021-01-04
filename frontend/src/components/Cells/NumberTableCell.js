@@ -29,20 +29,26 @@ const useStyles = makeStyles(theme => ({
 
 //TODO: change to only accept numbers !
 
-export default function NumberTableCell({row, name, onChange}){
+export default function NumberTableCell({row, name, onChange}) {
     const classes = useStyles();
     const {isEditMode} = row;
+
+    function changeNumber(input) {
+        input.target.value = input.target.value * 31536000
+        onChange(input, row);
+    };
     return (
         <TableCell align="left" className={classes.tableCell}>
             {isEditMode ? (
                 <Input
-                    value={row[name]}
+                    value={Math.floor(row[name] / 31536000)}
                     name={name}
-                    onChange={e => onChange(e, row)}
+                    type="number"
+                    onChange={e => changeNumber(e , row)}
                     className={classes.input}
                 />
             ) : (
-                row[name]
+                Math.floor(row[name] / 31536000)
             )}
         </TableCell>
     );

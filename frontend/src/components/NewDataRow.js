@@ -3,6 +3,7 @@ import TableCell from "@material-ui/core/TableCell";
 import IconButton from "@material-ui/core/IconButton";
 import DoneIcon from "@material-ui/icons/DoneAllTwoTone";
 import RevertIcon from "@material-ui/icons/NotInterestedOutlined";
+import AddIcon from '@material-ui/icons/Add';
 import EditIcon from "@material-ui/icons/EditOutlined";
 import TableRow from "@material-ui/core/TableRow";
 import {makeStyles} from "@material-ui/core/styles";
@@ -37,77 +38,56 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function DataRow(props) {
-    const [previous, setPrevious] = React.useState({});
+export default function DataRow() {
+    const initalState = {
+        id: Math.floor(Math.random() * 1100),
+        dateInfect: new Date() / 1000,
+        dateEnd: new Date() / 1000,
+        birthday: 0,
+        gender: "U",
+        preConditions: "",
+        district: "",
+        state: "OOE",
+        isEditMode: true
+    }
+    const [row, setRow] = React.useState(initalState);
     const {data, getPatientData} = useData();
-    const [row, setRow] = React.useState(props.data);
-    const classes = useStyles();
     const {enqueueSnackbar} = useSnackbar();
-
-    useEffect(() => {
-        setRow(props.data);
-    }, [props.data]);
-
-    const onToggleEditMode = () => {
-        const newRow = row => {
-            return {...row, ["isEditMode"]: !row.isEditMode};
-        };
-        setRow(newRow);
-    };
+    const classes = useStyles();
 
     const onChange = (e, row) => {
-        if (!previous[row.id]) {
-            setPrevious(state => ({...state, [row.id]: row}));
-        }
         const value = e.target.value;
         const name = e.target.name;
         const newRow = row => {
-            return {...row, [name]: value, updated: true};
+            return {...row, [name]: value};
         };
         setRow(newRow);
     };
 
-    const onDelete = () => {
+    const onAdd = () => {
         const config = {headers: {'Content-Type': 'application/json'}};
-
-        axios.delete("/patient/" + row.id, config).then(
+        const input = {
+            id: row.id,
+            dateInfect: row.dateInfect,
+            dateEnd: row.dateEnd,
+            birthday: row.birthday,
+            gender: row.gender,
+            preConditions: row.preConditions,
+            district: row.district,
+            state: row.state
+        }
+        axios.post("/patient", input, config).then(
             result => {
                 if (result.status === 200) {
-                    enqueueSnackbar("Data Deleted", {variant: 'success'});
+                    enqueueSnackbar("Data Added", {variant: 'success'});
+                    initalState.id = Math.floor(Math.random() * 1100);
+                    setRow(initalState);
                     getPatientData();
                 }
             }).catch(e => {
             enqueueSnackbar("Server Error", {variant: 'error'});
         });
 
-        onToggleEditMode();
-    };
-
-    const onUpdate = () => {
-        if (row.updated) {
-            const config = {headers: {'Content-Type': 'application/json'}};
-            const input = {
-                id: row.id,
-                dateInfect: row.dateInfect,
-                dateEnd: row.dateEnd,
-                birthday: row.birthday,
-                gender: row.gender,
-                preConditions: row.preConditions,
-                district: row.district,
-                state: row.state
-            }
-            axios.put("/patient/" + row.id, input, config).then(
-                result => {
-                    if (result.status === 200) {
-                        enqueueSnackbar("Data Updated", {variant: 'success'});
-                        getPatientData();
-                    }
-                }).catch(e => {
-                enqueueSnackbar("Server Error", {variant: 'error'});
-            });
-        }
-
-        onToggleEditMode();
     };
 
     return (
@@ -120,20 +100,9 @@ export default function DataRow(props) {
             <TextTableCell {...{row, name: "district", onChange}} />
             <StateTableCell {...{row, name: "state", onChange}} />
             <TableCell className={classes.selectTableCell}>
-                {row.isEditMode ? (
-                    <>
-                        <IconButton aria-label="done" onClick={() => onUpdate()}>
-                            <DoneIcon/>
-                        </IconButton>
-                        <IconButton aria-label="revert" onClick={() => onDelete()}>
-                            <RevertIcon/>
-                        </IconButton>
-                    </>
-                ) : (
-                    <IconButton aria-label="delete" onClick={() => onToggleEditMode()}>
-                        <EditIcon/>
-                    </IconButton>
-                )}
+                <IconButton aria-label="delete" onClick={() => onAdd()}>
+                    <AddIcon/>
+                </IconButton>
             </TableCell>
         </TableRow>
     );
