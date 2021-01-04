@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
         minWidth: 650
     },
     selectTableCell: {
-        width: 60
+        width: 40
     },
     tableCell: {
         width: 130,

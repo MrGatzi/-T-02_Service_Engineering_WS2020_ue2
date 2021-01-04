@@ -8,28 +8,11 @@ import DateFnsUtils from '@date-io/date-fns';
 import {MuiPickersUtilsProvider, KeyboardDatePicker,} from '@material-ui/pickers';
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        width: "100%",
-        marginTop: theme.spacing(3),
-        overflowX: "auto"
-    },
-    table: {
-        minWidth: 650
-    },
-    selectTableCell: {
-        width: 60
-    },
     tableCell: {
-        width: 130,
+        width: 110,
         height: 40
     },
-    input: {
-        width: 130,
-        height: 40
-    }
 }));
-
-//TODO: change to only accept Dates --> ask backend how they are represented. maybe calcuclate current date form time!
 
 export default function DateTableCell({row, name, onChange}) {
     const classes = useStyles();

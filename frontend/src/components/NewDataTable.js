@@ -28,15 +28,19 @@ const useStyles = makeStyles(theme => ({
     input: {
         width: 130,
         height: 40
-    }
+    },
+    title: {
+        marginLeft: 30,
+        marginTop: 20,
+    },
 }));
 
 export default function NewDataTable() {
     const classes = useStyles();
     return (
         <Paper className={classes.root}>
-            <Typography variant="h6" component="h2">
-                Add Entry:
+            <Typography className={classes.title} variant="h6" component="h2">
+                Neuer Eintrag:
             </Typography>
             <Table className={classes.table} aria-label="caption table">
                 <TableHead>

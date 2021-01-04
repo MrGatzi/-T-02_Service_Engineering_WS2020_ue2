@@ -16,11 +16,11 @@ const useStyles = makeStyles(theme => ({
         width: 60
     },
     tableCell: {
-        width: 130,
+        width: 300,
         height: 40
     },
     input: {
-        width: 130,
+        width: 300,
         height: 40
     }
 }));

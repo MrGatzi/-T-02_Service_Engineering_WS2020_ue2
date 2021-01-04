@@ -11,6 +11,9 @@ import Typography from "@material-ui/core/Typography";
 import axios from '../utils/axios';
 import {useSnackbar} from "notistack";
 import {useData} from "../context/data";
+import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -31,7 +34,14 @@ const useStyles = makeStyles(theme => ({
     input: {
         width: 130,
         height: 40
-    }
+    },
+    title: {
+        marginLeft: 30,
+        marginTop: 30,
+    },
+    head: {
+        width: "90%",
+    },
 }));
 
 
@@ -39,18 +49,57 @@ export default function DataTable() {
     const classes = useStyles();
     const {data, getPatientData} = useData();
     const [rows, setRows] = React.useState([]);
-    const {enqueueSnackbar} = useSnackbar();
+    const [date1, setDate1] = React.useState(new Date());
+    const [date2, setDate2] = React.useState(new Date());
 
     useEffect(() => {
-        setRows([]);
         setRows(data);
     }, [data]);
 
+    function checkFilter() {
+        return date1 !== date2 && date1 < date2;
+    };
+
+    function sorter(a, b) {
+        if (a.dateInfect < b.dateInfect) return -1;
+        if (a.dateInfect > b.dateInfect) return 1;
+        return 0;
+    }
     return (
         <Paper className={classes.root}>
-            <Typography variant="h6" component="h2">
-                DataSet:
-            </Typography>
+            <Grid className={classes.head} container direction="row" spacing={3}>
+                <Grid item className={classes.title}>
+                    <Typography variant="h6" component="h2">
+                        Daten:
+                    </Typography>
+                </Grid>
+                <Grid item xs={2}>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDatePicker
+                            fullWidth
+                            variant="inline"
+                            format="dd-MM-yyyy"
+                            margin="normal"
+                            label="von"
+                            value={date1}
+                            onChange={e => setDate1(e)}
+                        />
+                    </MuiPickersUtilsProvider>
+                </Grid>
+                <Grid item xs={2}>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDatePicker
+                            fullWidth
+                            variant="inline"
+                            format="dd-MM-yyyy"
+                            margin="normal"
+                            label="bis"
+                            value={date2}
+                            onChange={e => setDate2(e)}
+                        />
+                    </MuiPickersUtilsProvider>
+                </Grid>
+            </Grid>
             <Table className={classes.table} aria-label="caption table">
                 <TableHead>
                     <TableRow>
@@ -65,9 +114,17 @@ export default function DataTable() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map(row => (
-                        <DataRow data={row}/>
-                    ))}
+                    {checkFilter() ? (rows.filter(row => row.dateInfect>date1/1000 && row.dateInfect<date2/1000).sort(function(a, b) {
+                        if (a.dateInfect < b.dateInfect) return -1;
+                        if (a.dateInfect > b.dateInfect) return 1;
+                        return 0;
+                    }).map(row => (<DataRow data={row}/>))):(rows.sort(function(a, b) {
+                        if (a.dateInfect < b.dateInfect) return -1;
+                        if (a.dateInfect > b.dateInfect) return 1;
+                        return 0;
+                    }).map(row => (<DataRow data={row}/>)))
+
+                    }
                 </TableBody>
             </Table>
         </Paper>
