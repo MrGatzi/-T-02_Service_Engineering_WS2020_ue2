@@ -65,4 +65,9 @@ public class Controller {
     void deletePatient(@PathVariable Long id) {
         this.patientRepository.deleteById(id);
     }
+
+    @GetMapping(path = "/api/hello")
+    public String getResp(){
+        return  "Hey authenticated request";
+    }
 }
