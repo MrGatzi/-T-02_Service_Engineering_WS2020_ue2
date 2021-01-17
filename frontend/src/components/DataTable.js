@@ -8,8 +8,6 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import DataRow from "./DataRow";
 import Typography from "@material-ui/core/Typography";
-import axios from '../utils/axios';
-import {useSnackbar} from "notistack";
 import {useData} from "../context/data";
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";

@@ -5,6 +5,8 @@ import NewDataTable from "./components/NewDataTable";
 import {SnackbarProvider, useSnackbar} from 'notistack';
 import {DataContext} from "./context/data";
 import axios from "./utils/axios";
+import {Auth} from "aws-amplify";
+
 
 export default function App() {
 
@@ -12,9 +14,8 @@ export default function App() {
     const {enqueueSnackbar} = useSnackbar();
 
     const getNewData = () => {
-        const config = {headers: {'Content-Type': 'application/json'}};
-
-        axios.get("/patient", config).then(
+        const crosA = {headers: {'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*"}};
+        axios.get("/patient", crosA).then(
             result => {
                 if (result.status === 200) {
                     setData(result.data);
@@ -25,18 +26,21 @@ export default function App() {
 
     }
 
-    useEffect(() => {
+    useEffect(async () => {
+        await Auth.currentAuthenticatedUser().then(u => {
+            let authToken = "Bearer " + u.getSignInUserSession().getIdToken().getJwtToken();
+            axios.defaults.headers.common['Authorization'] = authToken;
+        })
         getNewData();
     }, []);
 
     return (
-        //TODO create Serach (for date)
         <div>
 
-                <DataContext.Provider value={{data, getPatientData: getNewData}}>
-                    <NewDataTable></NewDataTable>
-                    <DataTable></DataTable>
-                </DataContext.Provider>
+            <DataContext.Provider value={{data, getPatientData: getNewData}}>
+                <NewDataTable></NewDataTable>
+                <DataTable></DataTable>
+            </DataContext.Provider>
 
         </div>
     );

@@ -1,13 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-
-    baseURL: "http://localhost:8080/",
-    headers: {
-        common: {
-            'Authorization': 'Bearer ' + localStorage.getItem('CognitoIdentityServiceProvider.4hu5e747hsoa3djebroq73lh7d.ringodev.idToken')
-        }
-    }
+    baseURL: "http://awsseue5-env.eba-ijmmfhg3.eu-central-1.elasticbeanstalk.com",
 });
 
 export default instance;

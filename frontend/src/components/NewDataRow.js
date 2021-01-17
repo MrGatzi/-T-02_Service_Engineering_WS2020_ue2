@@ -100,7 +100,7 @@ export default function DataRow() {
             <TextTableCell {...{row, name: "district", onChange}} />
             <StateTableCell {...{row, name: "state", onChange}} />
             <TableCell className={classes.selectTableCell}>
-                <IconButton aria-label="delete" onClick={() => onAdd()}>
+                <IconButton aria-label="add" onClick={() => onAdd()}>
                     <AddIcon/>
                 </IconButton>
             </TableCell>
