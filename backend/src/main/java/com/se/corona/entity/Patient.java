@@ -1,4 +1,4 @@
-package com.se.corona;
+package com.se.corona.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,14 +11,14 @@ public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    long id;
-    long dateInfect;
-    long dateEnd;
-    long birthday;
-    Gender gender;
-    String preConditions;
-    String district;
-    State state;
+    private long id;
+    private long dateInfect;
+    private long dateEnd;
+    private long birthday;
+    private Gender gender;
+    private String preConditions;
+    private String district;
+    private State state;
 
     @Id
     public long getId() {

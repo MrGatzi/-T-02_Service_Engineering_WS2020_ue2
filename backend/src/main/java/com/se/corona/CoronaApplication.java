@@ -10,6 +10,7 @@ import com.nimbusds.jose.util.ResourceRetriever;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
+import com.se.corona.auth.config.JwtConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -33,7 +34,7 @@ public class CoronaApplication {
 
     @Bean
     public ConfigurableJWTProcessor configurableJWTProcessor() throws MalformedURLException {
-        ResourceRetriever resourceRetriever = new DefaultResourceRetriever(2000,2000);
+        ResourceRetriever resourceRetriever = new DefaultResourceRetriever(jwtConfiguration.getConnectionTimeout(),jwtConfiguration.getReadTimeout());
         URL jwkURL= new URL(jwtConfiguration.getJwkUrl());
         JWKSource keySource= new RemoteJWKSet(jwkURL, resourceRetriever);
         ConfigurableJWTProcessor jwtProcessor= new DefaultJWTProcessor();

@@ -1,4 +1,4 @@
-package com.se.corona;
+package com.se.corona.auth.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

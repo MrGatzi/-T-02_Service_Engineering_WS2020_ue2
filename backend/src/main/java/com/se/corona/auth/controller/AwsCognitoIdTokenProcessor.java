@@ -1,9 +1,9 @@
-package com.se.corona;
+package com.se.corona.auth.controller;
 
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
-import com.se.corona.JwtAuthentication;
-import com.se.corona.JwtConfiguration;
+import com.se.corona.auth.config.JwtConfiguration;
+import com.se.corona.auth.entity.JwtAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

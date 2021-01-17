@@ -1,6 +1,6 @@
-package com.se.corona;
+package com.se.corona.auth.controller;
 
-import com.se.corona.Controller;
+import com.se.corona.controller.Controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -27,8 +27,8 @@ public class AwsCognitoJwtAuthFilter extends GenericFilter {
             authentication = this.cognitoIdTokenProcessor.authenticate ((HttpServletRequest)request);
             if (authentication != null) {    SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-        } catch (Exception var6) {
-            logger.error("Cognito ID Token processing error", var6);
+        } catch (Exception e) {
+            logger.error("Cognito ID Token processing error", e);
             SecurityContextHolder.clearContext();
         }
 

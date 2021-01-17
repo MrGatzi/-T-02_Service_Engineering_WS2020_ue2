@@ -1,5 +1,7 @@
-package com.se.corona;
+package com.se.corona.controller;
 
+import com.se.corona.db.PatientRepository;
+import com.se.corona.entity.Patient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +16,8 @@ import java.util.stream.Collectors;
 @RequestMapping("patient")
 public class Controller {
 
-    PatientRepository patientRepository;
-    Logger logger = LoggerFactory.getLogger(Controller.class);
+    private PatientRepository patientRepository;
+    private static final Logger logger = LoggerFactory.getLogger(Controller.class);
 
     @Autowired
     Controller(PatientRepository patientRepository) {
@@ -31,16 +33,16 @@ public class Controller {
     List<Patient> getPatients(@RequestParam(required = false) Long startBefore, @RequestParam(required = false) Long startAfter, @RequestParam(required = false) Long endBefore, @RequestParam(required = false) Long endAfter) {
         List<Patient> patients = patientRepository.findAll();
         if (startBefore != null) {
-            patients = patients.stream().filter(p -> p.dateInfect <= startBefore).collect(Collectors.toList());
+            patients = patients.stream().filter(p -> p.getDateInfect() <= startBefore).collect(Collectors.toList());
         }
         if (startAfter != null) {
-            patients = patients.stream().filter(p -> p.dateInfect >= startAfter).collect(Collectors.toList());
+            patients = patients.stream().filter(p -> p.getDateInfect() >= startAfter).collect(Collectors.toList());
         }
         if (endBefore != null) {
-            patients = patients.stream().filter(p -> p.dateEnd <= endBefore).collect(Collectors.toList());
+            patients = patients.stream().filter(p -> p.getDateEnd() <= endBefore).collect(Collectors.toList());
         }
         if (endAfter != null) {
-            patients = patients.stream().filter(p -> p.dateInfect >= endAfter).collect(Collectors.toList());
+            patients = patients.stream().filter(p -> p.getDateInfect() >= endAfter).collect(Collectors.toList());
         }
         return patients;
     }
@@ -64,10 +66,5 @@ public class Controller {
     @DeleteMapping("/{id}")
     void deletePatient(@PathVariable Long id) {
         this.patientRepository.deleteById(id);
-    }
-
-    @GetMapping(path = "/api/hello")
-    public String getResp(){
-        return  "Hey authenticated request";
     }
 }

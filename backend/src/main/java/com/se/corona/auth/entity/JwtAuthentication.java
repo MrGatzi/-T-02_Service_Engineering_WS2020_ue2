@@ -1,4 +1,4 @@
-package com.se.corona;
+package com.se.corona.auth.entity;
 
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;

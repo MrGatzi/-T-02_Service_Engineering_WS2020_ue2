@@ -1,6 +1,6 @@
-package com.se.corona;
+package com.se.corona.auth.config;
 
-import com.se.corona.AwsCognitoJwtAuthFilter;
+import com.se.corona.auth.controller.AwsCognitoJwtAuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,7 +39,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         config.setAllowedOrigins(Arrays.asList("https://master.dhpiwf0f1fy96.amplifyapp.com"));
         config.setAllowCredentials(true);
         config.addAllowedHeader("*");
-        config.addAllowedMethod("OPTIONS");
         config.addAllowedMethod("GET");
         config.addAllowedMethod("POST");
         config.addAllowedMethod("PUT");
